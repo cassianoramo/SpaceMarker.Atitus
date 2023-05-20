@@ -25,7 +25,7 @@ tela.blit( carregar, (10, 22) )
 tela.blit( deletar, (10, 32) )
 #Variaveis dos pontos
 estrelas = {}
-
+posicaoAnterior = (0,0)
 while running:
     
     for event in pygame.event.get():
@@ -42,8 +42,11 @@ while running:
                 item = "desconhecido"+str(pos)
             estrelas[item] = pos
             pygame.draw.circle(tela, branco,(pos),5)
+            if posicaoAnterior != (0,0):
+                pygame.draw.line(tela,branco,(pos),(posicaoAnterior),1)
             estrelaNome = font.render(item, True, branco)
             tela.blit(estrelaNome, (pos) )
+            posicaoAnterior = pos
 
 
     
