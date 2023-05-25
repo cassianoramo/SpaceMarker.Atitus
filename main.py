@@ -56,14 +56,17 @@ while running:
             arquivo = open("RegistroDeEstrelas.txt","r")
             registro = arquivo.read()
             dicionario = eval(registro)
+
+            nomeAnterior = None
+
             for key,value in dicionario.items():      
                 pygame.draw.circle(tela, branco,(value), 5)
                 dicionario_chave = font.render(key, True, branco)
                 tela.blit(dicionario_chave, (value))
-          
-            
+                if nomeAnterior is not None:
+                    pygame.draw.line(tela,branco,(value),(nomeAnterior),1)
+                nomeAnterior = value
 
 
- 
     pygame.display.update()
 pygame.quit()
