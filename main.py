@@ -25,13 +25,17 @@ tela.blit( carregar, (10, 22) )
 tela.blit( deletar, (10, 32) )
 #Variaveis dos pontos
 estrelas = {}
+dicionario = {}
 posicaoAnterior = (0,0)
 while running:
     
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+            if bool(estrelas):
+                estrelas.update(dicionario)
+                arquivo = open("RegistroDeEstrelas.txt","w")
+                arquivo.write(str(estrelas))
+                arquivo.close()
             running = False
         #Caixa de Diálogo
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
@@ -47,9 +51,16 @@ while running:
             estrelaNome = font.render(item, True, branco)
             tela.blit(estrelaNome, (pos) )
             posicaoAnterior = pos
+            
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
+            arquivo = open("RegistroDeEstrelas.txt","r")
+            registro = arquivo.read()
+            dicionario = eval(registro)
+            for value in dicionario.values():
+                x,y = value
+                pygame.draw.circle(tela, branco,(x,y), 5)
+           # for key in dicionario.items():
 
-
-    
-
+ 
     pygame.display.update()
 pygame.quit()
