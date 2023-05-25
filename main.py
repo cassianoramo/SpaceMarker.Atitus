@@ -56,10 +56,13 @@ while running:
             arquivo = open("RegistroDeEstrelas.txt","r")
             registro = arquivo.read()
             dicionario = eval(registro)
-            for value in dicionario.values():
-                x,y = value
-                pygame.draw.circle(tela, branco,(x,y), 5)
-           # for key in dicionario.items():
+            for key,value in dicionario.items():      
+                pygame.draw.circle(tela, branco,(value), 5)
+                dicionario_chave = font.render(key, True, branco)
+                tela.blit(dicionario_chave, (value))
+          
+            
+
 
  
     pygame.display.update()
