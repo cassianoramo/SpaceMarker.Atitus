@@ -1,4 +1,4 @@
-import pygame
+import pygame, math
 from tkinter import simpledialog, messagebox
 
 
@@ -52,6 +52,17 @@ while running:
             pygame.draw.circle(tela, branco,(pos),5)
             if posicaoAnterior != (0,0):
                 pygame.draw.line(tela,branco,(pos),(posicaoAnterior),1)
+                #Marcação de distancias entre os pontos
+                x,y = pos
+                x_anterior, y_anterior = posicaoAnterior
+                distancia = math.sqrt((x_anterior - x) ** 2 + (y_anterior - y) ** 2)
+                distancia_texto = f'Distância: {distancia:.2f}'
+                fonte = pygame.font.Font(None, 20)
+                texto = fonte.render(distancia_texto, True, (255, 255, 255))
+                posicao_texto = ((x + x_anterior) // 2, (y + y_anterior) // 2)
+                tela.blit(texto, posicao_texto)
+                
+
             estrelaNome = font.render(item, True, branco)
             tela.blit(estrelaNome, (pos) )
             posicaoAnterior = pos
@@ -63,6 +74,8 @@ while running:
                 arquivo = open("RegistroDeEstrelas.txt","w")
                 arquivo.write(str(estrelas))
                 arquivo.close()
+            else:
+                messagebox.showinfo("Space Marker", "Não existem dados na tela para salvamento")
         
 
         #Carregamento
@@ -80,12 +93,25 @@ while running:
                     tela.blit(dicionario_chave, (value))
                     if nomeAnterior is not None:
                         pygame.draw.line(tela,branco,(value),(nomeAnterior),1)
+
+                        #Marcação de distancias entre os pontos
+                        x,y = value
+                        x_anterior, y_anterior = nomeAnterior
+                        distancia = math.sqrt((x_anterior - x) ** 2 + (y_anterior - y) ** 2)
+                        distancia_texto = f'Distância: {distancia:.2f}'
+                        fonte = pygame.font.Font(None, 20)
+                        texto = fonte.render(distancia_texto, True, (255, 255, 255))
+                        posicao_texto = ((x + x_anterior) // 2, (y + y_anterior) // 2)
+                        tela.blit(texto, posicao_texto)
+
+
                     nomeAnterior = value
             except:
-               messagebox.showinfo("Space Marker", "Não existem dados salvos")
+               messagebox.showinfo("Space Marker", "Não existem dados salvos para carregamento")
 
         #Delete
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_F12:
+            
             arquivo = open("RegistroDeEstrelas.txt", "w")  
             arquivo.truncate()  
             arquivo.close()  
