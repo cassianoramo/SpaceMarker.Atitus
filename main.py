@@ -1,5 +1,6 @@
 import pygame
-from tkinter import simpledialog
+from tkinter import simpledialog, messagebox
+
 
 #Configurações iniciais
 pygame.init()
@@ -27,6 +28,7 @@ tela.blit( deletar, (10, 32) )
 estrelas = {}
 dicionario = {}
 posicaoAnterior = (0,0)
+
 while running:
     
     for event in pygame.event.get():
@@ -42,8 +44,10 @@ while running:
             pos = pygame.mouse.get_pos()
             item = simpledialog.askstring("Space","Nome da Estrela: ")
             print(item)
-            if item == None:
+            if item == "":
                 item = "desconhecido"+str(pos)
+            if item == None:
+                break
             estrelas[item] = pos
             pygame.draw.circle(tela, branco,(pos),5)
             if posicaoAnterior != (0,0):
@@ -51,21 +55,48 @@ while running:
             estrelaNome = font.render(item, True, branco)
             tela.blit(estrelaNome, (pos) )
             posicaoAnterior = pos
-            
+
+        #Salvamento
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_F10: 
+            if bool(estrelas):
+                estrelas.update(dicionario)
+                arquivo = open("RegistroDeEstrelas.txt","w")
+                arquivo.write(str(estrelas))
+                arquivo.close()
+        
+
+        #Carregamento
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-            arquivo = open("RegistroDeEstrelas.txt","r")
-            registro = arquivo.read()
-            dicionario = eval(registro)
+            try:
+                arquivo = open("RegistroDeEstrelas.txt","r")
+                registro = arquivo.read()
+                dicionario = eval(registro)
 
-            nomeAnterior = None
+                nomeAnterior = None
 
-            for key,value in dicionario.items():      
-                pygame.draw.circle(tela, branco,(value), 5)
-                dicionario_chave = font.render(key, True, branco)
-                tela.blit(dicionario_chave, (value))
-                if nomeAnterior is not None:
-                    pygame.draw.line(tela,branco,(value),(nomeAnterior),1)
-                nomeAnterior = value
+                for key,value in dicionario.items():      
+                    pygame.draw.circle(tela, branco,(value), 5)
+                    dicionario_chave = font.render(key, True, branco)
+                    tela.blit(dicionario_chave, (value))
+                    if nomeAnterior is not None:
+                        pygame.draw.line(tela,branco,(value),(nomeAnterior),1)
+                    nomeAnterior = value
+            except:
+               messagebox.showinfo("Space Marker", "Não existem dados salvos")
+
+        #Delete
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_F12:
+            arquivo = open("RegistroDeEstrelas.txt", "w")  
+            arquivo.truncate()  
+            arquivo.close()  
+            estrelas = {}
+            dicionario = {}
+            posicaoAnterior = (0,0)
+            tela.blit( fundo, (0,0) )
+            tela.blit( salvar, (10, 10) )
+            tela.blit( carregar, (10, 22) )
+            tela.blit( deletar, (10, 32) )
+
 
 
     pygame.display.update()
