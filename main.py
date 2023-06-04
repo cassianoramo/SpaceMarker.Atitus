@@ -4,12 +4,12 @@ from tkinter import simpledialog, messagebox
 
 #Configurações iniciais
 pygame.init()
-tamanho = (883,600)
+tamanho = (883,600) 
 branco = (255,255,255)
 tela = pygame.display.set_mode(tamanho)
 pygame.display.set_caption("Space Marker")
 running = True
-icone = pygame.image.load("icon.png")
+icone = pygame.image.load("icone.bmp")
 pygame.display.set_icon( icone )
 fundo  = pygame.image.load("BG.jpeg")
 pygame.mixer.music.load("Interstellar.mp3")
@@ -34,10 +34,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
             if bool(estrelas):
-                estrelas.update(dicionario)
-                arquivo = open("RegistroDeEstrelas.txt","w")
-                arquivo.write(str(estrelas))
-                arquivo.close()
+                resposta = messagebox.askyesno("Space Marker", "Deseja salvar os pontos antes de sair?")
+                if resposta:
+                    estrelas.update(dicionario)
+                    arquivo = open("RegistroDeEstrelas.txt","w")
+                    arquivo.write(str(estrelas))
+                    arquivo.close()
             running = False
         #Caixa de Diálogo
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
