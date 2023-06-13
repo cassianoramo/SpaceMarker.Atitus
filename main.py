@@ -28,6 +28,7 @@ tela.blit( deletar, (10, 32) )
 estrelas = {}
 dicionario = {}
 posicaoAnterior = (0,0)
+primeiraMensagem = False
 
 
 
@@ -89,6 +90,7 @@ while running:
                 arquivo = open("RegistroDeEstrelas.txt","r")
                 registro = arquivo.read()
                 dicionario = eval(registro)
+                estrelas = eval(registro)
 
                 nomeAnterior = None
 
@@ -109,7 +111,7 @@ while running:
                         posicao_texto = ((x + x_anterior) // 2, (y + y_anterior) // 2)
                         tela.blit(texto, posicao_texto)
 
-
+                    
                     nomeAnterior = value
             except:
                messagebox.showinfo("Space Marker", "Não existem dados salvos para carregamento")
@@ -128,7 +130,8 @@ while running:
             tela.blit( carregar, (10, 22) )
             tela.blit( deletar, (10, 32) )
 
-
-
     pygame.display.update()
+    if primeiraMensagem == False:
+        messagebox.showinfo("Space Marker", "Verifique se há dados salvos antes de realizar novas marcações")
+        primeiraMensagem = True
 pygame.quit()
