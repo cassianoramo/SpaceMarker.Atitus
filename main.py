@@ -9,9 +9,9 @@ branco = (255,255,255)
 tela = pygame.display.set_mode(tamanho)
 pygame.display.set_caption("Space Marker")
 running = True
-icone = pygame.image.load("icone.bmp")
+icone = pygame.image.load("icon.bmp")
 pygame.display.set_icon( icone )
-fundo  = pygame.image.load("BG.jpeg")
+fundo  = pygame.image.load("BG.bmp")
 pygame.mixer.music.load("Interstellar.mp3")
 pygame.mixer.music.play(-1)
 
@@ -28,6 +28,8 @@ tela.blit( deletar, (10, 32) )
 estrelas = {}
 dicionario = {}
 posicaoAnterior = (0,0)
+
+
 
 while running:
     
@@ -72,6 +74,7 @@ while running:
         #Salvamento
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_F10: 
             if bool(estrelas):
+                
                 estrelas.update(dicionario)
                 arquivo = open("RegistroDeEstrelas.txt","w")
                 arquivo.write(str(estrelas))
